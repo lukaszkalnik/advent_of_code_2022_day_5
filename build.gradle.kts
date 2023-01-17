@@ -13,6 +13,8 @@ repositories {
 }
 
 dependencies {
+    implementation("com.squareup.okio:okio:3.3.0")
+
     testImplementation(kotlin("test"))
 }
 
