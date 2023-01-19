@@ -24,13 +24,13 @@ private fun BufferedSource.readStacks(): List<List<Char>> {
 }
 
 private fun parseStacks(lines: List<String>): List<List<Char>> {
-    val reversedTable = parseTable(lines).reversed()
-    val stackHeight = reversedTable.size
-    val stacksWidth = reversedTable.first().size
+    val table = parseTable(lines)
+    val stackHeight = table.size
+    val stacksWidth = table.first().size
 
     val stacks: List<List<Char>> = List(stacksWidth) { stackNumber ->
         List(stackHeight) { cratePosition ->
-            reversedTable[cratePosition][stackNumber]
+            table[cratePosition][stackNumber]
         }.dropLastWhile { it == ' ' }
     }
     return stacks
@@ -39,6 +39,7 @@ private fun parseStacks(lines: List<String>): List<List<Char>> {
 private const val CELL_WIDTH = 4
 private const val CHAR_POSITION = 1
 private fun parseTable(lines: List<String>): List<List<Char>> = lines.map { line ->
-    val cells = line.chunked(CELL_WIDTH)
-    cells.map { it.elementAt(CHAR_POSITION) }
+    line.chunked(CELL_WIDTH)
+        .map { it.elementAt(CHAR_POSITION) }
 }.dropLast(1)
+    .reversed()
