@@ -31,7 +31,7 @@ private fun parseStacks(lines: List<String>): List<List<Char>> {
     val stacks: List<List<Char>> = List(stacksWidth) { stackNumber ->
         List(stackHeight) { stackPosition ->
             reversedTable[stackPosition][stackNumber]
-        }
+        }.dropLastWhile { it == ' ' }
     }
     return stacks
 }
