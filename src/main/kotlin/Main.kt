@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
     }
 }
 
-private fun BufferedSource.readStacks(): List<List<Char>> {
+private fun BufferedSource.readStacks(): List<ArrayDeque<Char>> {
     val lines = mutableListOf<String>()
 
     while (true) {
@@ -23,17 +23,17 @@ private fun BufferedSource.readStacks(): List<List<Char>> {
     throw IllegalStateException("EOF while reading crates")
 }
 
-private fun parseStacks(lines: List<String>): List<List<Char>> {
+private fun parseStacks(lines: List<String>): List<ArrayDeque<Char>> {
     val table = parseTable(lines)
     val stackHeight = table.size
     val stacksWidth = table.first().size
 
-    val stacks: List<List<Char>> = List(stacksWidth) { stackNumber ->
+    return List(stacksWidth) { stackNumber ->
         List(stackHeight) { cratePosition ->
             table[cratePosition][stackNumber]
         }.dropLastWhile { it == ' ' }
+            .let { ArrayDeque(it) }
     }
-    return stacks
 }
 
 private const val CELL_WIDTH = 4
