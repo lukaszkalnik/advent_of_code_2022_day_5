@@ -9,18 +9,18 @@ fun main(args: Array<String>) {
 
     FileSystem.SYSTEM.read(path) {
         stacks = readStacks()
-        stacks.forEach { println(it) }
 
-        repeat(2) {
-            val line = readUtf8Line() ?: return
-            if (line.isEmpty()) return
+        while (true) {
+            val line = readUtf8Line() ?: break
+            if (line.isEmpty()) break
 
             val move = parseMove(line)
             executeMove(move)
-            println(line)
-            stacks.forEach { println(it) }
         }
     }
+
+    val topCrates = stacks.map { it.last() }.joinToString(separator = "")
+    println(topCrates)
 }
 
 private fun BufferedSource.readStacks(): List<ArrayDeque<Char>> {
