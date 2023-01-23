@@ -6,25 +6,32 @@ import kotlin.system.measureTimeMillis
 private lateinit var stacks: List<ArrayDeque<Char>>
 
 fun main(args: Array<String>) {
-    val runtime = measureTimeMillis {
+    var numberOfMoves = 0
+
+    val totalRuntime = measureTimeMillis {
         val path = args[0].toPath()
 
         FileSystem.SYSTEM.read(path) {
             stacks = readStacks()
 
-            while (true) {
-                val line = readUtf8Line() ?: break
-                if (line.isEmpty()) break
+            val movesRuntime = measureTimeMillis {
+                while (true) {
+                    val line = readUtf8Line() ?: break
+                    if (line.isEmpty()) break
 
-                val move = parseMove(line)
-                executeMove(move)
+                    val move = parseMove(line)
+                    executeMove(move)
+                    ++numberOfMoves
+                }
             }
+            val microsPerMove = movesRuntime.toDouble() * 1000 / numberOfMoves
+            println("Time per move: $microsPerMove µs")
         }
 
         val topCrates = stacks.map { it.last() }.joinToString(separator = "")
         println(topCrates)
     }
-    println("Runtime: $runtime ms")
+    println("Total runtime: $totalRuntime ms")
 }
 
 private fun BufferedSource.readStacks(): List<ArrayDeque<Char>> {
