@@ -79,9 +79,8 @@ private fun executeMove(move: Move) {
         val sourceStack = stacks[fromStack]
         val destinationStack = stacks[toStack]
 
-        repeat(numberOfCrates) {
-            val crate = sourceStack.removeLast()
-            destinationStack.addLast(crate)
-        }
+        val crates = sourceStack.takeLast(numberOfCrates)
+        repeat(numberOfCrates) { sourceStack.removeLast() }
+        destinationStack.addAll(crates)
     }
 }
