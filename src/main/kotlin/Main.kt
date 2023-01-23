@@ -1,26 +1,30 @@
 import okio.BufferedSource
 import okio.FileSystem
 import okio.Path.Companion.toPath
+import kotlin.system.measureTimeMillis
 
 private lateinit var stacks: List<ArrayDeque<Char>>
 
 fun main(args: Array<String>) {
-    val path = args[0].toPath()
+    val runtime = measureTimeMillis {
+        val path = args[0].toPath()
 
-    FileSystem.SYSTEM.read(path) {
-        stacks = readStacks()
+        FileSystem.SYSTEM.read(path) {
+            stacks = readStacks()
 
-        while (true) {
-            val line = readUtf8Line() ?: break
-            if (line.isEmpty()) break
+            while (true) {
+                val line = readUtf8Line() ?: break
+                if (line.isEmpty()) break
 
-            val move = parseMove(line)
-            executeMove(move)
+                val move = parseMove(line)
+                executeMove(move)
+            }
         }
-    }
 
-    val topCrates = stacks.map { it.last() }.joinToString(separator = "")
-    println(topCrates)
+        val topCrates = stacks.map { it.last() }.joinToString(separator = "")
+        println(topCrates)
+    }
+    println("Runtime: $runtime ms")
 }
 
 private fun BufferedSource.readStacks(): List<ArrayDeque<Char>> {
